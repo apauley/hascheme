@@ -11,7 +11,7 @@ main = do
 readExpr :: String -> String
 readExpr input = case parse parseExpr "lisp" input of
   Left err -> "No match: " ++ show err
-  Right val -> "Found value"
+  Right val -> "Found value: " ++ show val
 
 symbol :: Parser Char
 symbol = oneOf "!$%&|*+-/:<=?>@^_~#"
@@ -45,3 +45,11 @@ data LispVal = Atom String
              | Number Integer
              | String String
              | Bool Bool
+
+instance Show LispVal where
+  show (Atom x) = show x
+  show (List x) = show x
+  show (DottedList x y) = show (x ++ [y])
+  show (Number x) = show x
+  show (String x) = show x
+  show (Bool x) = show x
