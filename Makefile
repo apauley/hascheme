@@ -1,2 +1,4 @@
 default:
-	ghc -package parsec simpleparser1.hs
+	./Setup.lhs configure --prefix=${HOME} --user
+	./Setup.lhs build -v
+	./Setup.lhs install

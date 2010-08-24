@@ -1,0 +1,10 @@
+Name:           hascheme
+Version:        0.0
+License:        BSD3
+Author:         Andreas Pauley <apauley+hascheme@gmail.com>
+Maintainer:     Andreas Pauley <apauley+hascheme@gmail.com>
+build-depends:  base, haskell98, parsec
+build-type:     Simple
+
+Executable:     hascheme
+Main-Is:        simpleparser1.hs
