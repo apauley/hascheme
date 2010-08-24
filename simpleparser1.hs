@@ -79,4 +79,4 @@ instance Show LispVal where
   show (Bool False) = "#f"
 
 unwordsList :: [LispVal] -> String
-unwordsList xs = unwords (map show xs)
+unwordsList = unwords . map show
