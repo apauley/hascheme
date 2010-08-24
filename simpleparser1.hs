@@ -70,9 +70,10 @@ data LispVal = Atom String
              | Bool Bool
 
 instance Show LispVal where
-  show (Atom x) = "Atom " ++ show x
-  show (List x) = "List " ++ show x
-  show (DottedList x y) = "DottedList " ++ show (x ++ [y])
-  show (Number x) = "Number " ++ show x
-  show (String x) = "String " ++ show x
-  show (Bool x) = "Bool " ++ show x
+  show (Atom x) = x
+  show (List x) = "(" ++ show x ++ ")"
+  show (DottedList x y) = "(" ++ show x ++ " . " ++ show y ++ ")"
+  show (Number x) = show x
+  show (String x) = show x
+  show (Bool True) = "#t"
+  show (Bool False) = "#f"
