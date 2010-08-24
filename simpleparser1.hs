@@ -6,12 +6,12 @@ import Control.Monad
 main :: IO ()
 main = do
   args <- getArgs
-  putStrLn (readExpr (args !! 0))
+  print (readExpr (args !! 0))
 
-readExpr :: String -> String
+readExpr :: String -> LispVal
 readExpr input = case parse parseExpr "lisp" input of
-  Left err -> "No match: " ++ show err
-  Right val -> "Found value: " ++ show val
+  Left err -> String $ "No match: " ++ show err
+  Right val -> val
 
 symbol :: Parser Char
 symbol = oneOf "!$%&|*+-/:<=?>@^_~#"
