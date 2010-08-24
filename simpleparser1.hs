@@ -69,14 +69,16 @@ data LispVal = Atom String
              | String String
              | Bool Bool
 
-instance Show LispVal where
-  show (Atom x) = x
-  show (List x) = "(" ++ unwordsList x ++ ")"
-  show (DottedList h t) = "(" ++ unwordsList h ++ " . " ++ show t ++ ")"
-  show (Number x) = show x
-  show (String x) = show x
-  show (Bool True) = "#t"
-  show (Bool False) = "#f"
+instance Show LispVal where show = showVal
+
+showVal :: LispVal -> String
+showVal (Atom x) = x
+showVal (List x) = "(" ++ unwordsList x ++ ")"
+showVal (DottedList h t) = "(" ++ unwordsList h ++ " . " ++ showVal t ++ ")"
+showVal (Number x) = show x
+showVal (String x) = show x
+showVal (Bool True) = "#t"
+showVal (Bool False) = "#f"
 
 unwordsList :: [LispVal] -> String
 unwordsList = unwords . map show
