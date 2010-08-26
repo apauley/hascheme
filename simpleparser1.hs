@@ -38,7 +38,7 @@ primitives = [("+", numericBinop (+)),
               ("quotient", numericBinop quot),
               ("remainder", numericBinop rem)]
 
-numericBinop :: (Integer -> Integer -> Integer) -> [LispVal] -> ThrowsError LispVal
+numericBinop :: (Integer->Integer->Integer) -> [LispVal] -> ThrowsError LispVal
 numericBinop op singleVal@[_] = throwError $ NumArgs 2 singleVal
 numericBinop op params = mapM unpackNum params >>= return . Number . foldl1 op
 
