@@ -36,7 +36,20 @@ primitives = [("+", numericBinop (+)),
               ("/", numericBinop div),
               ("mod", numericBinop mod),
               ("quotient", numericBinop quot),
-              ("remainder", numericBinop rem)]
+              ("remainder", numericBinop rem),
+              ("=", numBoolBinop (==)),
+              ("<", numBoolBinop (<)),
+              (">", numBoolBinop (>)),
+              ("/=", numBoolBinop (/=)),
+              (">=", numBoolBinop (>=)),
+              ("<=", numBoolBinop (<=)),
+              ("&&", boolBoolBinop (&&)),
+              ("||", boolBoolBinop (||)),
+              ("string=?", strBoolBinop (==)),
+              ("string<?", strBoolBinop (<)),
+              ("string>?", strBoolBinop (>)),
+              ("string<=?", strBoolBinop (<=)),
+              ("string>=?", strBoolBinop (>=))]
 
 numericBinop :: (Integer->Integer->Integer) -> [LispVal] -> ThrowsError LispVal
 numericBinop op singleVal@[_] = throwError $ NumArgs 2 singleVal
