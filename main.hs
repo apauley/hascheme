@@ -2,7 +2,7 @@ module Main where
 import System.Environment
 import Control.Monad
 import IO hiding (try)
-import SchemeParser
+import EvalApply
 
 main :: IO ()
 main =

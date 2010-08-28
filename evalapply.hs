@@ -1,4 +1,4 @@
-module SchemeParser where
+module EvalApply where
 import Text.ParserCombinators.Parsec hiding (spaces)
 import Control.Monad.Error
 import LispData
