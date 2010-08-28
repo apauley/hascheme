@@ -1,5 +1,6 @@
 module LispData where
 import Text.ParserCombinators.Parsec hiding (spaces)
+import Control.Monad.Error
 
 data LispVal = Atom String
              | List [LispVal]
@@ -18,7 +19,6 @@ showVal (Number x) = show x
 showVal (String x) = show x
 showVal (Bool True) = "#t"
 showVal (Bool False) = "#f"
-
 
 data LispError = NumArgs Integer [LispVal]
                | TypeMismatch String LispVal
@@ -39,6 +39,12 @@ showError (TypeMismatch expected found) = "Invalid type: expected " ++ expected
 showError (Parser parseErr) = "Parse error at " ++ show parseErr
 
 instance Show LispError where show = showError
+
+instance Error LispError where
+     noMsg = Default "An error has occurred"
+     strMsg = Default
+
+type ThrowsError = Either LispError
 
 unwordsList :: [LispVal] -> String
 unwordsList = unwords . map show

@@ -174,12 +174,6 @@ parseAtom = do first <- letter <|> symbol
 parseNumber :: Parser LispVal
 parseNumber = liftM (Number . read) $ many1 digit
 
-instance Error LispError where
-     noMsg = Default "An error has occurred"
-     strMsg = Default
-
-type ThrowsError = Either LispError
-
 trapError action = catchError action (return . show)
 
 extractValue :: ThrowsError a -> a
