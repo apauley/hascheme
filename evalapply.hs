@@ -2,7 +2,7 @@ module EvalApply where
 import Text.ParserCombinators.Parsec hiding (spaces)
 import Control.Monad.Error
 import LispData
-import ScmParser
+import SchemeParser
 
 readExpr :: String -> ThrowsError LispVal
 readExpr input = case parse parseExpr "lisp" input of

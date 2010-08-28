@@ -1,4 +1,4 @@
-module ScmParser where
+module SchemeParser where
 import Text.ParserCombinators.Parsec hiding (spaces)
 import Control.Monad.Error
 import LispData
