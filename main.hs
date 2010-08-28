@@ -1,7 +1,6 @@
 module Main where
 import System.Environment
 import Control.Monad
-
 import SchemeParser
 
 main :: IO ()
@@ -12,6 +11,9 @@ main =
        1 -> evalAndPrint (args !! 0)
        otherwise ->
          putStrLn "Run the program with 0 args for a repl or 1 lisp expression"
+
+evalAndPrint :: String -> IO ()
+evalAndPrint expr = evalString expr >>= putStrLn
 
 runRepl :: IO ()
 runRepl = until_ (== "quit") (readPrompt "Hascheme>>> ") evalAndPrint
