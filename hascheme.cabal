@@ -7,4 +7,4 @@ build-depends:  base, parsec, mtl, haskell98
 build-type:     Simple
 
 Executable:     hascheme
-Main-Is:        simpleparser1.hs
+Main-Is:        schemeparser.hs
