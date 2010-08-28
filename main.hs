@@ -9,19 +9,22 @@ main =
   do args <- getArgs
      case length args of
        0 -> runRepl
-       1 -> evalAndPrint (args !! 0)
+       1 -> runOne $ args !! 0
        otherwise ->
          putStrLn "Run the program with 0 args for a repl or 1 lisp expression"
 
-evalAndPrint :: String -> IO ()
-evalAndPrint expr = evalString expr >>= putStrLn
+evalAndPrint :: Env -> String -> IO ()
+evalAndPrint env expr = evalString env expr >>= putStrLn
 
-evalString :: String -> IO String
-evalString expr =
-  return $ extractValue $ trapError (liftM show $ readExpr expr >>= eval)
+evalString :: Env -> String -> IO String
+evalString env expr =
+  runIOThrows $ liftM show $ (liftThrows $ readExpr expr) >>= eval env
+
+runOne :: String -> IO ()
+runOne expr = nullEnv >>= flip evalAndPrint expr
 
 runRepl :: IO ()
-runRepl = until_ (== "quit") (readPrompt "Hascheme>>> ") evalAndPrint
+runRepl = nullEnv >>= until_ (== "quit") (readPrompt "hascheme>>> ") . evalAndPrint
 
 flushStr :: String -> IO ()
 flushStr str = putStr str >> hFlush stdout
