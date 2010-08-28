@@ -137,3 +137,11 @@ extractValue (Right val) = val
 isBound :: Env -> String -> IO Bool
 isBound envRef var =
   readIORef envRef >>= return . maybe False (const True) . lookup var
+
+getVar :: Env -> String -> IOThrowsError LispVal
+getVar envRef var =
+  do env <- liftIO $ readIORef envRef
+     maybe
+       (throwError $ UnboundVar "Getting an unbound variable: " var)
+       (liftIO . readIORef)
+       (lookup var env)
