@@ -1,5 +1,7 @@
 module Main where
 import System.Environment
+import Control.Monad
+
 import SchemeParser
 
 main :: IO ()
@@ -13,3 +15,10 @@ main =
 
 runRepl :: IO ()
 runRepl = until_ (== "quit") (readPrompt "Hascheme>>> ") evalAndPrint
+
+until_ :: Monad m => (a->Bool) -> m a -> (a->m ()) -> m ()
+until_ pred prompt action = do
+  result <- prompt
+  if pred result
+    then return ()
+    else action result >> until_ pred prompt action
