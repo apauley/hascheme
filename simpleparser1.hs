@@ -8,8 +8,7 @@ import IO hiding (try)
 main :: IO ()
 main = do
        args <- getArgs
-       result <- evalString (args !! 0)
-       putStrLn result
+       evalAndPrint (args !! 0)
 
 readExpr :: String -> ThrowsError LispVal
 readExpr input = case parse parseExpr "lisp" input of
@@ -242,3 +241,7 @@ readPrompt prompt = flushStr prompt >> getLine
 evalString :: String -> IO String
 evalString expr =
   return $ extractValue $ trapError (liftM show $ readExpr expr >>= eval)
+
+evalAndPrint :: String -> IO ()
+evalAndPrint expr = evalString expr >>= putStrLn
+
