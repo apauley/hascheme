@@ -1,21 +1,9 @@
-module Main where
+module SchemeParser where
 import System.Environment
 import Text.ParserCombinators.Parsec hiding (spaces)
 import Control.Monad
 import Control.Monad.Error
 import IO hiding (try)
-
-main :: IO ()
-main =
-  do args <- getArgs
-     case length args of
-       0 -> runRepl
-       1 -> evalAndPrint (args !! 0)
-       otherwise ->
-         putStrLn "Run the program with 0 args for a repl or 1 lisp expression"
-
-runRepl :: IO ()
-runRepl = until_ (== "quit") (readPrompt "Hascheme>>> ") evalAndPrint
 
 readExpr :: String -> ThrowsError LispVal
 readExpr input = case parse parseExpr "lisp" input of
