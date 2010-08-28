@@ -1,6 +1,7 @@
 module Main where
 import System.Environment
 import Control.Monad
+import IO hiding (try)
 import SchemeParser
 
 main :: IO ()
@@ -21,6 +22,12 @@ evalString expr =
 
 runRepl :: IO ()
 runRepl = until_ (== "quit") (readPrompt "Hascheme>>> ") evalAndPrint
+
+flushStr :: String -> IO ()
+flushStr str = putStr str >> hFlush stdout
+
+readPrompt :: String -> IO String
+readPrompt prompt = flushStr prompt >> getLine
 
 until_ :: Monad m => (a->Bool) -> m a -> (a->m ()) -> m ()
 until_ pred prompt action = do

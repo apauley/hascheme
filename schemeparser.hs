@@ -1,7 +1,6 @@
 module SchemeParser where
 import Text.ParserCombinators.Parsec hiding (spaces)
 import Control.Monad.Error
-import IO hiding (try)
 import LispData
 
 readExpr :: String -> ThrowsError LispVal
@@ -178,9 +177,3 @@ trapError action = catchError action (return . show)
 
 extractValue :: ThrowsError a -> a
 extractValue (Right val) = val
-
-flushStr :: String -> IO ()
-flushStr str = putStr str >> hFlush stdout
-
-readPrompt :: String -> IO String
-readPrompt prompt = flushStr prompt >> getLine
