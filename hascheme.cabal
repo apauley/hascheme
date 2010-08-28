@@ -3,7 +3,7 @@ Version:        0.0
 License:        BSD3
 Author:         Andreas Pauley <apauley+hascheme@gmail.com>
 Maintainer:     Andreas Pauley <apauley+hascheme@gmail.com>
-build-depends:  base, parsec, mtl
+build-depends:  base, parsec, mtl, haskell98
 build-type:     Simple
 
 Executable:     hascheme
