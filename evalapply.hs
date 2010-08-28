@@ -3,6 +3,10 @@ import Text.ParserCombinators.Parsec hiding (spaces)
 import Control.Monad.Error
 import LispData
 import SchemeParser
+import Data.IORef
+
+type Env = IORef [(String, IORef LispVal)]
+type IOThrowsError = ErrorT LispError IO
 
 readExpr :: String -> ThrowsError LispVal
 readExpr input = case parse parseExpr "lisp" input of
@@ -129,3 +133,7 @@ trapError action = catchError action (return . show)
 
 extractValue :: ThrowsError a -> a
 extractValue (Right val) = val
+
+isBound :: Env -> String -> IO Bool
+isBound envRef var =
+  readIORef envRef >>= return . maybe False (const True) . lookup var
