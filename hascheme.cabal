@@ -7,4 +7,4 @@ build-depends:  base, parsec, mtl, haskell98
 build-type:     Simple
 
 Executable:     hascheme
-Main-Is:        main.hs
+Main-Is:        Main.hs
