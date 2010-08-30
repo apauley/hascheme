@@ -26,6 +26,12 @@ showVal (Number x) = show x
 showVal (String x) = show x
 showVal (Bool True) = "#t"
 showVal (Bool False) = "#f"
+showVal (PrimitiveFunc _) = "<primitive>"
+showVal (Func {params = args, vararg = varargs, body = body, closure = env}) =
+  "(lambda (" ++ unwords (map show args) ++
+     (case varargs of
+        Nothing -> ""
+        Just arg -> " . " ++ arg) ++ ") ...)"
 
 data LispError = NumArgs Integer [LispVal]
                | TypeMismatch String LispVal
