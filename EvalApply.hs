@@ -5,7 +5,6 @@ import LispData
 import SchemeParser
 import Data.IORef
 
-type Env = IORef [(String, IORef LispVal)]
 type IOThrowsError = ErrorT LispError IO
 
 readExpr :: String -> ThrowsError LispVal

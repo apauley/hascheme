@@ -3,6 +3,7 @@ import System.Environment
 import Control.Monad
 import IO hiding (try)
 import EvalApply
+import LispData
 
 main :: IO ()
 main =

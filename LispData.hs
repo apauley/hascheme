@@ -1,6 +1,9 @@
 module LispData where
 import Text.ParserCombinators.Parsec hiding (spaces)
 import Control.Monad.Error
+import Data.IORef
+
+type Env = IORef [(String, IORef LispVal)]
 
 data LispVal = Atom String
              | List [LispVal]
@@ -8,6 +11,10 @@ data LispVal = Atom String
              | Number Integer
              | String String
              | Bool Bool
+             | PrimitiveFunc ([LispVal] -> ThrowsError LispVal)
+             | Func {params :: [String], vararg :: (Maybe String),
+                     body :: [LispVal], closure :: Env}
+
 
 instance Show LispVal where show = showVal
 
