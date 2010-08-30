@@ -24,7 +24,15 @@ runOne :: String -> IO ()
 runOne expr = nullEnv >>= flip evalAndPrint expr
 
 runRepl :: IO ()
-runRepl = nullEnv >>= until_ (== "quit") (readPrompt "hascheme>>> ") . evalAndPrint
+runRepl =
+  do
+    putStrLn "Welcome to hacheme!"
+    putStrLn "It is simply a simple Scheme interpreter written in Haskell."
+    putStrLn "This is a toy project done for my own amusement, don't try to"
+    putStrLn "use it for anything that matters."
+    putStrLn "\nHappy Hacking!\n"
+    putStrLn "Type \":q\" to exit the interpreter."
+    nullEnv >>= until_ (== ":q") (readPrompt "hascheme>>> ") . evalAndPrint
 
 flushStr :: String -> IO ()
 flushStr str = putStr str >> hFlush stdout
