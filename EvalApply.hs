@@ -57,6 +57,7 @@ apply (Func params varargs body closure) args =
               Just argName -> liftIO $
                               bindVars env [(argName, List $ remainingArgs)]
               Nothing -> return env
+apply (IOFunc func) args = func args
 
 makeFunc varargs env params body = return $
                                    Func (map showVal params) varargs body env
