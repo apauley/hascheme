@@ -27,7 +27,8 @@ eval env (List [Atom "define", Atom var, form]) =
     eval env form >>= defineVar env var
 eval env (List (Atom "define" : List (Atom var : params) : body)) =
     makeNormalFunc env params body >>= defineVar env var
-eval env (List (Atom "define" : DottedList (Atom var : params) varargs : body)) =
+eval env
+  (List (Atom "define" : DottedList (Atom var : params) varargs : body)) =
     makeVarargs varargs env params body >>= defineVar env var
 eval env (List (Atom "lambda" : List params : body)) =
     makeNormalFunc env params body
@@ -39,28 +40,32 @@ eval env (List (function : args)) = do
     func <- eval env function
     argVals <- mapM (eval env) args
     apply func argVals
-
-eval env badForm = throwError $ BadSpecialForm "Unrecognized special form" badForm
+eval env badForm =
+  throwError $ BadSpecialForm "Unrecognized special form" badForm
 
 apply :: LispVal -> [LispVal] -> IOThrowsError LispVal
 apply (PrimitiveFunc func) args = liftThrows $ func args
 apply (Func params varargs body closure) args =
     if num params /= num args && varargs == Nothing
        then throwError $ NumArgs (num params) args
-       else (liftIO $ bindVars closure $ zip params args) >>= bindVarArgs varargs >>= evalBody
+       else (liftIO $ bindVars closure $ zip params args)
+            >>= bindVarArgs varargs >>= evalBody
     where remainingArgs = drop (length params) args
           num = toInteger . length
           evalBody env = liftM last $ mapM (eval env) body
           bindVarArgs arg env = case arg of
-              Just argName -> liftIO $ bindVars env [(argName, List $ remainingArgs)]
+              Just argName -> liftIO $
+                              bindVars env [(argName, List $ remainingArgs)]
               Nothing -> return env
 
-makeFunc varargs env params body = return $ Func (map showVal params) varargs body env
+makeFunc varargs env params body = return $
+                                   Func (map showVal params) varargs body env
 makeNormalFunc = makeFunc Nothing
 makeVarargs = makeFunc . Just . showVal
 
 primitiveBindings :: IO Env
-primitiveBindings = nullEnv >>= (flip bindVars $ map makePrimitiveFunc primitives)
+primitiveBindings = nullEnv >>=
+                    (flip bindVars $ map makePrimitiveFunc primitives)
     where makePrimitiveFunc (var, func) = (var, PrimitiveFunc func)
 
 primitives :: [(String, [LispVal] -> ThrowsError LispVal)]
@@ -115,9 +120,11 @@ eqv [(Bool arg1), (Bool arg2)] = return $ Bool $ arg1 == arg2
 eqv [(Number arg1), (Number arg2)] = return $ Bool $ arg1 == arg2
 eqv [(String arg1), (String arg2)] = return $ Bool $ arg1 == arg2
 eqv [(Atom arg1), (Atom arg2)] = return $ Bool $ arg1 == arg2
-eqv [(DottedList xs x), (DottedList ys y)] = eqv [List $ xs ++ [x], List $ ys ++ [y]]
-eqv [(List arg1), (List arg2)] = return $ Bool $ (length arg1 == length arg2) &&
-                                                    (all eqvPair $ zip arg1 arg2)
+eqv [(DottedList xs x), (DottedList ys y)] =
+  eqv [List $ xs ++ [x], List $ ys ++ [y]]
+eqv [(List arg1), (List arg2)] =
+  return $ Bool $ (length arg1 == length arg2) &&
+  (all eqvPair $ zip arg1 arg2)
     where eqvPair (x1, x2) = case eqv [x1, x2] of
                                Left err -> False
                                Right (Bool val) -> val
@@ -132,7 +139,8 @@ numBoolBinop = boolBinop unpackNum
 strBoolBinop = boolBinop unpackStr
 boolBoolBinop = boolBinop unpackBool
 
-boolBinop :: (LispVal->ThrowsError a) -> (a->a->Bool) -> [LispVal] -> ThrowsError LispVal
+boolBinop :: (LispVal->ThrowsError a) -> (a->a->Bool) -> [LispVal] ->
+             ThrowsError LispVal
 boolBinop unpacker op args =
   if length args /= 2
   then throwError $ NumArgs 2 args
