@@ -22,7 +22,7 @@ evalString env expr =
   runIOThrows $ liftM show $ (liftThrows $ readExpr expr) >>= eval env
 
 runOne :: String -> IO ()
-runOne expr = nullEnv >>= flip evalAndPrint expr
+runOne expr = primitiveBindings >>= flip evalAndPrint expr
 
 runRepl :: IO ()
 runRepl =
@@ -33,7 +33,7 @@ runRepl =
     putStrLn "use it for anything that matters."
     putStrLn "\nHappy Hacking!\n"
     putStrLn "Type \":q\" to exit the interpreter."
-    nullEnv >>= until_ (== ":q") (readPrompt "hascheme>>> ") . evalAndPrint
+    primitiveBindings >>= until_ (== ":q") (readPrompt "hascheme>>> ") . evalAndPrint
 
 flushStr :: String -> IO ()
 flushStr str = putStr str >> hFlush stdout
