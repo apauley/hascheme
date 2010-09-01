@@ -5,8 +5,6 @@ import LispData
 import SchemeParser
 import Data.IORef
 
-type IOThrowsError = ErrorT LispError IO
-
 readExpr :: String -> ThrowsError LispVal
 readExpr input = case parse parseExpr "lisp" input of
   Left err -> throwError (Parser err)
