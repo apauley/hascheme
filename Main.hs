@@ -27,7 +27,7 @@ runOne expr = primitiveBindings >>= flip evalAndPrint expr
 runRepl :: IO ()
 runRepl =
   do
-    putStrLn "Welcome to hacheme!"
+    putStrLn "Welcome to hascheme!"
     putStrLn "It is simply a simple Scheme interpreter written in Haskell."
     putStrLn "This is a toy project done for my own amusement, don't try to"
     putStrLn "use it for anything that matters."
